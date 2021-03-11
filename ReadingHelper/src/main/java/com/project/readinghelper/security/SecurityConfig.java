@@ -32,7 +32,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 				.loginPage("/")     //로그인페이지 경로
 				.loginProcessingUrl("/loginRes")     //로그인form의 action경로와 일치시켜야 한다! -> AuthenticationProvider를 상속받은 클래스의 오버라이딩 받은 authenticate메서드 호출
 				.failureUrl("/")    //로그인 실패시 해당 어노테이션 호출
-				.defaultSuccessUrl("/#/home")    //로그인 성공시 해당 어노테이션 호출
+				.defaultSuccessUrl("/#/main")    //로그인 성공시 해당 어노테이션 호출
 				.usernameParameter("userId")    //파라미터
 				.passwordParameter("userPw") // 파라미터
 				.and()
