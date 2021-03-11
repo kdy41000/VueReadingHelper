@@ -44,4 +44,4 @@ war파일 확인
 
 4. 커밋 시 주의사항
 
-src/main/resources/static 하위의 파일은 제외하고 commit해야 한다.
+src/main/resources/static 하위의 파일은 제외하고 commit해야 한다. 
