@@ -1,4 +1,4 @@
-/*package com.project.readinghelper.security;
+package com.project.readinghelper.security;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationProvider;
@@ -23,7 +23,9 @@ public class CustomAuthenticationProvider implements AuthenticationProvider{
           
         String username = authentication.getName();   //입력한 아이디
         String password = (String) authentication.getCredentials();   //입력한 패스워드
-          
+          System.out.println("===userInfo===");
+          System.out.println(username);
+          System.out.println(password);
         UsernamePasswordAuthenticationToken authToken = (UsernamePasswordAuthenticationToken) authentication; 
         UserDetails user = loginService.loadUserByUsername(authToken.getName());   //입력한 아이디의 사용자가 존재하는지 확인
         String encryptPass = loginService.selectEncryptPass(password);      //패스워드 암호화(mariadb PASSWORD함수 사용)
@@ -44,4 +46,4 @@ public class CustomAuthenticationProvider implements AuthenticationProvider{
     public boolean supports(Class<?> authentication) {
         return authentication.equals(UsernamePasswordAuthenticationToken.class);
     }
-}*/
+}
