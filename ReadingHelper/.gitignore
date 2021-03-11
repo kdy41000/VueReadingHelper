@@ -121,6 +121,10 @@ dependency-reduced-pom.xml
 buildNumber.properties
 .mvn/timing.properties
 .mvn/wrapper/maven-wrapper.jar
+.mvn/wrapper/maven-wrapper.properties
+.mvn/wrapper/MavenWrapperDownloader.java
+src/main/resources/static/index.html
+frontend/package-lock.json
 
 ### Windows ###
 # Windows thumbnail cache files
@@ -148,4 +152,5 @@ $RECYCLE.BIN/
 # Windows shortcuts
 *.lnk
 
+*.lock
 # End of https://www.gitignore.io/api/git,java,maven,windows,eclipse
