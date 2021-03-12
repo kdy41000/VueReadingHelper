@@ -44,21 +44,11 @@ export default {
           hiddenField.setAttribute("name","userPw");
           hiddenField.setAttribute("value",this.userPw);
           form.appendChild(hiddenField);
-    console.log("form:",form);
+ 
           document.body.appendChild(form);
           form.submit();
 
-          /*this.$axios.post(`/login/loginRes`,userInfo)
-          .then((response) => {
-            console.log("res:",response);
-          })
-          .catch((error) => {
-              console.log(`[ERROR]${error}`);
-          })*/
       }
-  },
-  created() {
-      this.getList();
   }
 }
 </script>

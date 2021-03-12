@@ -3,17 +3,6 @@
     <div class="contents">
       <router-view></router-view>
     </div>
-      <!--<nav>
-        <ul>
-          <li><router-link v-bind:to="{ name: 'home' }">Home</router-link></li>
-          <li><router-link v-bind:to="{ name: 'list' }">리스트</router-link></li>
-        </ul>  
-      </nav>  
-    </div> 
-    <hr/>
-    <div class="contents">
-      <router-view></router-view>
-    </div>-->   
   </div>
 </template> 
 
