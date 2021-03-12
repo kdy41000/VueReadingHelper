@@ -1,5 +1,10 @@
 package com.project.readinghelper.security;
 
+import java.util.Collection;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -29,13 +34,13 @@ public class CustomAuthenticationProvider implements AuthenticationProvider{
         UsernamePasswordAuthenticationToken authToken = (UsernamePasswordAuthenticationToken) authentication; 
         UserDetails user = loginService.loadUserByUsername(authToken.getName());   //입력한 아이디의 사용자가 존재하는지 확인
         String encryptPass = loginService.selectEncryptPass(password);      //패스워드 암호화(mariadb PASSWORD함수 사용)
-
         
         //입력 받은 비밀번호와 DB에 저장된 비밀번호를 비교하여 인증 처리를 한다.
         if(!encryptPass.equals(user.getPassword())) {
 						//로그인 실패 (.failureUrl("/login"))
             throw new BadCredentialsException("패스워드 불일치");
         }
+        System.out.println("auth:"+user.getAuthorities());
       
         //토큰발급하여 로그인 성공처리를 한다. (.defaultSuccessUrl("/home"))
 				//파라미터(username, password, auth)가 전달되어야 한다.
