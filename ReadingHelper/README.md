@@ -16,8 +16,7 @@
 		@backend기동
 		sts4 UTF-8 및 기타 설정
 		스프링 프로젝트 run (port:8080)
-		@frontend기동
-		$ cd frontend
+		@frontend기동 (VSCode로 frontend폴더까지 들어간 후 Open)
 		$ npm install
 		$ npm run serve (port:8081)
 		
@@ -40,3 +39,10 @@
 		로컬 브랜치 생성 -> 원격 브랜치 push -> switch master pull request -> 원격 master push
 		ex) dykim -> 원격dykim push -> switch master pull request -> 원격master push
 		작업은 개인 브랜치 생성 후 작업하도록 한다.
+		개인환경설정에 따라 생성된 불필요한 커밋목록에서 제외시킬 파일은 루트경로에 있는 .gitignore파일에 추가한다.(해당파일은 커밋하면 안됨)
+		
+## 6. 커밋 시 이슈<br/>
+		간혹 frontend경로 하위에 있는 파일을 VSCode에서 수정하였지만 커밋목록에 나타나지 않는 이슈가 발생한다.
+		@해결방법
+		1.폴더에서 frontend/src를 복사하여 프로젝트에 붙여넣는다.
+		2.sts4에서 Git을 사용하는 대신 SourceTree를 사용한다.
