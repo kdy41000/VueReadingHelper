@@ -20,7 +20,11 @@ public class AdminDao {
 	}
 	
 	public List<UserInfoEntity> getUserListFilter(UserInfoParam params) {
-		System.out.println("paramsdao:" + params);
 		return mapper.getUserListFilter(params);
 	}
+	
+	public int updateUserInfo(UserInfoEntity params) {
+		return mapper.updateUserInfo(params);
+	}
+	
 }

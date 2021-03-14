@@ -18,4 +18,6 @@ public interface AdminMapper {
 	
 	List<UserInfoEntity> getUserListFilter(UserInfoParam params);
 	
+	int updateUserInfo(UserInfoEntity params);
+	
 }

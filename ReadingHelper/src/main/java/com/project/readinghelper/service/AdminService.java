@@ -23,4 +23,8 @@ public class AdminService {
 	public List<UserInfoEntity> getUserListFilter(UserInfoParam params) {
 		return dao.getUserListFilter(params);
 	}
+	
+	public int updateUserInfo(UserInfoEntity params) {
+		return dao.updateUserInfo(params);
+	}
 }

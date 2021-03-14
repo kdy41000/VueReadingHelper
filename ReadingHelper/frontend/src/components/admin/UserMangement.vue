@@ -12,6 +12,9 @@
       </select>    
       <input type="text" v-model="searchTxt" placeholder="검색어를 입력해주세요." />
       <button @click="searchUserList">검색</button>
+
+      <button @click="excelDownload">엑셀 다운로드</button>
+
       <p>총: {{totalCnt}}건</p>
       <table border="1">
           <tr>
@@ -21,7 +24,7 @@
               <th>Email</th>
               <th>Auth</th>
           </tr>    
-          <tr v-for="(item,idx) in userList" v-bind:key="idx">
+          <tr v-for="(item,idx) in userList" v-bind:key="idx" @click="userDetail(item)">
             <td>{{ item.no }}</td>
             <td>{{ item.userId }}</td>    
             <td>{{ item.userName }}</td>    
@@ -31,11 +34,13 @@
       </table>  
       <!-- 페이지네이션 공통함수(부모 -> 자식(데이터전달) -> 자식(페이지네이션 필터링) -> 부모(필터링된 데이터 전달받음)) -->
       <Pagination :list-array="allList" v-on:updatedata="refreshData"/>  
+      <UserDetailPopup v-if="isModalViewed" :user-detail="userDetailParam" @close-modal="isModalViewed=false" @update-list="getUserList"/>
   </div>  
 </template>
 
 <script>
 import Pagination from "../utils/Pagination";
+import UserDetailPopup from "./UserDetailPopup";
 
 export default {
   name: 'UserManagement',
@@ -45,11 +50,13 @@ export default {
           userList:[],
           totalCnt:0,
           selectVal: "all",
-          searchTxt: ""
+          searchTxt: "",
+          isModalViewed: false,
+          userDetailParam: {}
       }
   },
   components: {
-      Pagination
+      Pagination, UserDetailPopup
   },
   watch: {
     /*customer_data: function(param) {
@@ -90,6 +97,24 @@ export default {
            
               this.totalCnt = response.data.result.length;
               this.allList = response.data.result;
+          })
+          .catch((error) => {
+              console.log(`[ERROR]${error}`);
+          })
+      },
+      userDetail:function(param) {
+          this.isModalViewed = true;
+          this.userDetailParam = param;
+      },
+      excelDownload:function() {
+          var params = {};
+          params.header = "No,Id,Name,Email,Auth";
+          params.body = this.allList;
+          params.fileName = "userManagement";
+          console.log("다운로드:",params);
+          this.$axios.post(`/excel/exceldownload`,params)
+          .then((response) => {
+              console.log(response.data);
           })
           .catch((error) => {
               console.log(`[ERROR]${error}`);
