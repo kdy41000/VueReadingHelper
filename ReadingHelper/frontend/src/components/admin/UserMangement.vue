@@ -1,7 +1,18 @@
 <template>
   <div>
       <h1>사용자 관리</h1>
-      <p>총:{{totalCnt}}</p>
+      <span>검색: </span>
+      <select v-on:input="updateValue($event.target.value)"
+              id="select_id"
+      >
+          <option value="all">전체</option>
+          <option value="userId">아이디</option>
+          <option value="userName">이름</option>
+          <option value="userEmail">이메일</option>
+      </select>    
+      <input type="text" v-model="searchTxt" placeholder="검색어를 입력해주세요." />
+      <button @click="searchUserList">검색</button>
+      <p>총: {{totalCnt}}건</p>
       <table border="1">
           <tr>
               <th>No</th>
@@ -13,7 +24,7 @@
           <tr v-for="(item,idx) in userList" v-bind:key="idx">
             <td>{{ item.no }}</td>
             <td>{{ item.userId }}</td>    
-            <td>{{ item.userName }}</td>   
+            <td>{{ item.userName }}</td>    
             <td>{{ item.userEmail }}</td>  
             <td>{{ item.userAuth }}</td>   
           </tr>    
@@ -32,7 +43,9 @@ export default {
       return {
           allList:[],
           userList:[],
-          totalCnt:0
+          totalCnt:0,
+          selectVal: "all",
+          searchTxt: ""
       }
   },
   components: {
@@ -60,6 +73,27 @@ export default {
       },
       refreshData:function(paramArray) {
           this.userList = paramArray;
+      },
+      updateValue:function(value) {
+          this.selectVal = value;
+      },
+      searchUserList:function() {
+          var param = {};
+          param.selectVal = this.selectVal;
+          param.searchTxt = this.searchTxt;
+
+          this.$axios.get(`/admin/getUserListFilter`,{params:param})
+          .then((response) => {
+              for(var i = 0; i < response.data.result.length; i++) {
+               response.data.result[i].no = i + 1;
+              }
+           
+              this.totalCnt = response.data.result.length;
+              this.allList = response.data.result;
+          })
+          .catch((error) => {
+              console.log(`[ERROR]${error}`);
+          })
       }
 
   },
