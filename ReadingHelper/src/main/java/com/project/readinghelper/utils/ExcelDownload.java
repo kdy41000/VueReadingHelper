@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
 
@@ -25,6 +26,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.project.readinghelper.domain.ResultInfo;
+
 @Controller
 @RequestMapping("/excel")
 public class ExcelDownload {
@@ -36,11 +39,21 @@ public class ExcelDownload {
 	
 	@Value("${file.upload.excel.path}")
 	private String path;
+	
+	private Map targetParam;
+	
+	@PostMapping("/exceldownloadParam")
+	@ResponseBody
+	public ResultInfo exceldownloadParam(@Validated(Select.class) @RequestBody Map params, HttpServletResponse response) {
+		ResultInfo result = new ResultInfo();
+		targetParam = new HashMap();
+		targetParam = params;
+		return result;
+	}
 
 	@PostMapping("/exceldownload")
 	@ResponseBody
-	public void excelDownload(@Validated(Select.class) @RequestBody Map params, HttpServletResponse response) {
-		System.out.println("엑셀파람:" + params);
+	public void excelDownload(@Validated(Select.class) HttpServletResponse response) {
 
 		  //디렉토리 확인
 		  File dir = new File(path);
@@ -51,7 +64,7 @@ public class ExcelDownload {
 		  //파일생성(위에서 설정한 경로에 poi로 임시파일생성 후 경로 return)
 		  String filePath = null;
 		  try {
-		   filePath = excelService.getSheetFormload(params);
+		   filePath = excelService.getSheetFormload(targetParam);
 		  } catch(IOException e) {
 		    if(logger.isErrorEnabled()) {
 		      logger.error(e.getMessage(),e);
@@ -66,7 +79,7 @@ public class ExcelDownload {
 		  Date curTime = new Date();
 		  String fileTime = formatter_ymdhms.format(curTime);
 		  FileInputStream fis = null;
-		  String fileFullName = params.get("fileName") + "_" + fileTime + ".xlsx";
+		  String fileFullName = targetParam.get("fileName") + "_" + fileTime + ".xlsx";
 		  
 		  try {
 		    response.setHeader("Content-Disposition","attachment;fileName=\""+java.net.URLEncoder.encode(fileFullName,"UTF-8")+"\";");

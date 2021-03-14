@@ -11,19 +11,17 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.hssf.util.HSSFColor.HSSFColorPredefined;
 import org.apache.poi.ss.usermodel.BorderStyle;
+import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.FillPatternType;
 import org.apache.poi.ss.usermodel.HorizontalAlignment;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.xssf.usermodel.XSSFCell;
-import org.apache.poi.xssf.usermodel.XSSFCellStyle;
-import org.apache.poi.xssf.usermodel.XSSFRow;
-import org.apache.poi.xssf.usermodel.XSSFSheet;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-import org.apache.poi.xssf.usermodel.XSSFCell;
-import org.apache.poi.xssf.usermodel.XSSFCellStyle;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
@@ -41,13 +39,13 @@ public class ExcelService {
 	public String getSheetFormload(Map param) throws IOException {
 		System.out.println("파람:" + param);
 		XSSFWorkbook wb = new XSSFWorkbook();
-		XSSFSheet sheet = wb.createSheet("사용자 리스트");  //엑셀파일 아래의 title지정
+		XSSFSheet sheet = wb.createSheet(param.get("fileName").toString());  //엑셀파일 아래의 title지정
 		XSSFRow row = null;
 		XSSFCell cell = null;
 		int rowNo = 0;
-		System.out.println("1번");
+		
 		// 테이블 헤더용 스타일
-		XSSFCellStyle headStyle = wb.createCellStyle();
+		CellStyle headStyle = wb.createCellStyle();
 
 		// 가는 경계선을 가집니다.
 		headStyle.setBorderTop(BorderStyle.THIN);
@@ -79,31 +77,34 @@ public class ExcelService {
 			cell.setCellValue(headerParam[i]);
 		}
 
-		//데이터 부분 생성
-		List<String> bodyList = (List<String>) param.keySet().stream().collect(Collectors.toList());
+		//데이터 부분 생성(해당부분 페이지 별로 추가 생성 필요)
+		List<Map<String,Object>> bodyList = (List<Map<String,Object>>) param.get("body");
 		
-		System.out.println("bodyList:" + bodyList);
-		/*row = sheet.createRow(rowNo++);
-		cell = row.createCell(0);
-		cell.setCellStyle(bodyStyle);
-		cell.setCellValue(resultDto.getGetTime());
-		cell = row.createCell(1);
-		cell.setCellStyle(bodyStyle);
-		cell.setCellValue(resultDto.getGuestLength());
-		*/
-		rowNo++;
-		
-		//데이터 부분 생성
-		/*for(GuestDto guestDto: resultDto.getGuestList()) {
-			row = sheet.createRow(rowNo++);
-			cell = row.createCell(0);
-			cell.setCellStyle(bodyStyle);
-			cell.setCellValue(guestDto.getId());
-			cell = row.createCell(1);
-			cell.setCellStyle(bodyStyle);
-			cell.setCellValue(guestDto.getPw());
-			
-		}*/
+		System.out.println("[bodyList]:" + bodyList);
+		if("userManagement".equals(param.get("fileName").toString())) {
+			for(int i = 0; i < bodyList.size(); i++) {
+				row = sheet.createRow(rowNo++);
+				cell = row.createCell(0);
+				cell.setCellStyle(bodyStyle);
+				cell.setCellValue(bodyList.get(i).get("no").toString());
+				
+				cell = row.createCell(1);
+				cell.setCellStyle(bodyStyle);
+				cell.setCellValue(bodyList.get(i).get("userId").toString());
+				
+				cell = row.createCell(2);
+				cell.setCellStyle(bodyStyle);
+				cell.setCellValue(bodyList.get(i).get("userName").toString());
+				
+				cell = row.createCell(3);
+				cell.setCellStyle(bodyStyle);
+				cell.setCellValue(bodyList.get(i).get("userEmail").toString());
+				
+				cell = row.createCell(4);
+				cell.setCellStyle(bodyStyle);
+				cell.setCellValue(bodyList.get(i).get("userAuth").toString());
+			}
+		}
 
 		long time = System.currentTimeMillis(); 
 		SimpleDateFormat dayTime = new SimpleDateFormat("yyyyMMddHHmmss");

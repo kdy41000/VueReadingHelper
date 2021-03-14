@@ -111,10 +111,21 @@ export default {
           params.header = "No,Id,Name,Email,Auth";
           params.body = this.allList;
           params.fileName = "userManagement";
-          console.log("다운로드:",params);
-          this.$axios.post(`/excel/exceldownload`,params)
+          console.log("[params]:",params);
+          this.$axios.post(`/excel/exceldownloadParam`,params)
           .then((response) => {
               console.log(response.data);
+              if(response.data.result.status) {
+
+                var form = document.createElement("form");
+                    form.setAttribute("charset","UTF-8");
+                    form.setAttribute("method","post");
+                    form.setAttribute("action","/excel/exceldownload");
+            
+                    document.body.appendChild(form);
+                    form.submit();
+              }
+
           })
           .catch((error) => {
               console.log(`[ERROR]${error}`);
